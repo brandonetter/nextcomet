@@ -4,6 +4,8 @@
 
 ### Usage
 
+0. `npm i nextcomet`
+
 1. Create next api route:
 
 ```js
