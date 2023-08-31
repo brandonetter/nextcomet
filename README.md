@@ -8,7 +8,7 @@
 
 ```js
 // app/api/SSE/route.ts
-import longPoll, { poller, PollLogger } from "@nextcomet";
+import longPoll, { poller, PollLogger } from "nextcomet";
 
 export async function GET() {
   await MongooseConnect(); // connect to your DB
@@ -44,7 +44,7 @@ export async function GET() {
 2. Use it in the frontend on a "use client" component:
 
 ```js
-import { listenSSE } from "@nextcomet";
+import { listenSSE } from "nextcomet";
 interface ChatMessage {
   message: string;
   id: string;
