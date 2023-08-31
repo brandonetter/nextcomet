@@ -1,0 +1,21 @@
+{
+  "name": "nextcomet",
+  "version": "0.1.0",
+  "description": "A package for creating and listening to Server Side Events with MongoDB and Next",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "package.json"
+  ],
+  "author": "Brandon Etter",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  }
+}
