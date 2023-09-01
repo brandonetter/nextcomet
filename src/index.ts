@@ -1,7 +1,12 @@
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 interface Notify {
-  log: (message: { message: string; id: string; tag: string }) => void;
+  log: (message: {
+    message: string;
+    id: string;
+    tag: string;
+    [key: string]: any;
+  }) => void;
   complete: (data: any) => void;
   error: (error: Error | any) => void;
   close: () => void;
@@ -31,6 +36,7 @@ export interface PollSettings {
   insert?: (notify: PollLogger, change: any) => void;
   delete?: (notify: PollLogger, change: any) => void;
   update?: (notify: PollLogger, change: any) => void;
+  initial?: (notify: PollLogger) => void;
 }
 export async function poller(
   responseStream: TransformStream,
@@ -40,7 +46,13 @@ export async function poller(
   const writer = responseStream.writable.getWriter();
   const encoder = new TextEncoder();
   let closed = false;
+  let initial = false;
   async function longPoller(notify: PollLogger) {
+    if (!initial && pollSettings.initial) {
+      pollSettings.initial(notify);
+      initial = true;
+    }
+
     eventEmitter.on("change", (change: any) => {
       if (change.operationType === "delete" && pollSettings.delete) {
         pollSettings.delete(notify, change);
@@ -52,6 +64,7 @@ export async function poller(
     });
 
     while (true) {
+      //   console.log(process.uptime());
       await delay(1000);
     }
   }
@@ -66,7 +79,7 @@ export async function poller(
       }
     },
     error: (err: Error | any) => {
-      writer.write(encoder.encode("data: " + err?.message + "\n\n"));
+      writer.write(encoder.encode("data: " + JSON.stringify(err) + "\n\n"));
       if (!closed) {
         writer.close();
         closed = true;
