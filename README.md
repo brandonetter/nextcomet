@@ -9,7 +9,7 @@
 1. Create next api route:
 
 ```js
-// app/api/SSE/route.ts
+// app/api/SSE/route.tsdd
 import longPoll, { poller, PollLogger } from "nextcomet";
 
 export async function GET() {
